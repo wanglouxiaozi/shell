@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #!/bin/bash
 
 echo "Shell 传递参数实例"
@@ -41,18 +40,3 @@ for i in `ls /etc`; do
 	echo $i
 done
 echo "==========================================================================="
-=======
-#!/usr/bin/env bash
-
-echo "Hello World!"
-your_name="runoob.com"
-echo $your_name
-echo {$your_name}
-echo ${your_name}
-for skill in Ada Coffe Action Java; do
-    echo "I am good at ${skill}Script"
-done
-for file in 'ls /etc'; do
-    echo ${file}
-done
->>>>>>> origin/master
