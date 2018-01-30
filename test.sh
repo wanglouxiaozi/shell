@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #!/bin/bash
 
 echo "Shell 传递参数实例"
@@ -55,4 +54,3 @@ done
 for file in 'ls /etc'; do
     echo ${file}
 done
->>>>>>> origin/master
