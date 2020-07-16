@@ -105,7 +105,7 @@ fi
 PROFILE_FILE=/etc/mbim-network.conf
 
 # Device + Command with options; options given first
-while [ $# -gt 2 ]; do
+while [ $# -gt 8 ]; do
     OPT="$1"
     shift
 
@@ -129,23 +129,63 @@ while [ $# -gt 2 ]; do
     esac
 done
 
+
 if [ -z "$PROFILE_FILE" ]; then
     echo "error: empty profile path given" 1>&2
     print_usage
     exit 255
 fi
 
-if [ $# -ne 2 ] || [[ $1 == --* ]] || [[ $2 == --* ]]; then
-    echo "error: missing arguments" 1>&2
-    print_usage
-    exit 255
-fi
+#if [ $# -ne 2 ] || [[ $1 == --* ]] || [[ $2 == --* ]]; then
+#    echo "error: missing arguments" 1>&2
+#    print_usage
+#    exit 255
+#fi
 
 DEVICE=$1
 COMMAND=$2
+#APN=
+#APN_USER=
+#APN_PASS=
+#APN_AUTH=
+#PROXY=
 
 STATE_FILE=/tmp/mbim-network-state-`basename $DEVICE`
 
+load_arguments ()
+{
+	echo "loading and parsing argument..."
+	for arg in $@; do
+		case "$arg" in
+			"--apn="*)
+				APN="${arg#*=}"
+				echo "APN=$APN"
+				;;
+			"--apn_user="*)
+				APN_USER="${arg#*=}"
+				echo "APN_USER=$APN_USER"
+				;;
+			"--apn_pass="*)
+				APN_PASS="${arg#*=}"
+				echo "APN_PASS=$APN_PASS"
+				;;
+			"--apn_auth="*)
+				APN_AUTH="${arg#*=}"
+				echo "APN_AUTH=$APN_AUTH"
+				;;
+			"--proxy="*)
+				PROXY="${arg#*=}"
+				echo "PROXY=$PROXY"
+				if [ "$PROXY" = "yes" ]; then
+					echo "    mbim-proxy: $PROXY"
+					PROXY_OPT='--device-open-proxy'
+				else
+					echo "    mbim-proxy: no"
+				fi
+				;;
+		esac
+	done
+}
 
 load_profile ()
 {
@@ -393,7 +433,8 @@ status ()
 # Main
 
 # Load profile, if any
-load_profile
+#load_profile
+load_arguments $*
 
 # Load previous state, if any
 load_state
